@@ -1,0 +1,43 @@
+.task {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.task .title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.task .title p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.task .title input {
+  font-size: 1rem;
+  inline-size: 100%;
+}
+
+.task .actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task .actions .btn-task-delete {
+  color: orangered;
+}
+
+.task .actions .btn-task-edit {
+  font-size: 1.25rem;
+  transform: rotate(45deg);
+}
