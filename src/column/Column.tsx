@@ -1,5 +1,11 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
-import { ColumnType } from "../App";
+import React, {
+  Dispatch,
+  DragEventHandler,
+  FC,
+  SetStateAction,
+  useState,
+} from "react";
+import { ColumnType, DragData } from "../App";
 import Task from "../task/Task";
 
 import "./Column.css";
@@ -8,9 +14,19 @@ interface ColumnProps {
   column: ColumnType;
   disableDelete: boolean;
   setColumns: Dispatch<SetStateAction<ColumnType[]>>;
+  handleDragOver: DragEventHandler;
+  handleDragStart: (arg: DragData) => void;
+  handleDrop: (columnId: string) => void;
 }
 
-const Column: FC<ColumnProps> = ({ column, setColumns, disableDelete }) => {
+const Column: FC<ColumnProps> = ({
+  column,
+  setColumns,
+  disableDelete,
+  handleDragOver,
+  handleDragStart,
+  handleDrop,
+}) => {
   const [newTask, setNewTask] = useState("");
   const [columnTitle, setColumnTitle] = useState(column.title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -57,7 +73,11 @@ const Column: FC<ColumnProps> = ({ column, setColumns, disableDelete }) => {
   };
 
   return (
-    <div className="column">
+    <div
+      className="column"
+      onDragOver={handleDragOver}
+      onDrop={() => handleDrop(column.id)}
+    >
       <div className="column-title" onClick={() => setIsEditingTitle(true)}>
         {isEditingTitle ? (
           <input
@@ -78,6 +98,7 @@ const Column: FC<ColumnProps> = ({ column, setColumns, disableDelete }) => {
           key={task.id}
           columnId={column.id}
           setColumns={setColumns}
+          handleDragStart={handleDragStart}
         />
       ))}
 

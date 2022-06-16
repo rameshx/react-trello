@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { DragEventHandler, useState } from "react";
 
 import "./App.css";
 import Column from "./column/Column";
@@ -14,7 +14,13 @@ export interface ColumnType {
   tasks: TaskType[];
 }
 
+export interface DragData {
+  taskId: string;
+  columnId: string;
+}
+
 function App() {
+  const [dragData, setDragData] = useState<DragData>();
   const [columns, setColumns] = useState<ColumnType[]>(() => {
     return [
       {
@@ -41,6 +47,43 @@ function App() {
     ]);
   };
 
+  const handleDragStart = (data: DragData) => {
+    setDragData(data);
+  };
+
+  const handleDragOver: DragEventHandler = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (columnId: string) => {
+    if (!dragData) return;
+    if (dragData.columnId === columnId) return;
+
+    setColumns((prev) => {
+      const taskToMove = {
+        ...prev
+          .find((x) => x.id === dragData.columnId)!
+          .tasks.find((t) => t.id === dragData.taskId)!,
+      };
+      const updatedColumns = prev.map((c) => {
+        if (c.id === dragData.columnId) {
+          return {
+            ...c,
+            tasks: c.tasks.filter((t) => t.id !== dragData.taskId),
+          };
+        }
+        if (c.id === columnId) {
+          return {
+            ...c,
+            tasks: [...c.tasks, taskToMove],
+          };
+        }
+        return c;
+      });
+      return updatedColumns;
+    });
+  };
+
   return (
     <div className="App">
       {columns.map((column) => (
@@ -49,6 +92,9 @@ function App() {
           column={column}
           key={column.id}
           setColumns={setColumns}
+          handleDragOver={handleDragOver}
+          handleDragStart={handleDragStart}
+          handleDrop={handleDrop}
         />
       ))}
 

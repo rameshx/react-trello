@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import { ColumnType, TaskType } from "../App";
+import { ColumnType, DragData, TaskType } from "../App";
 
 import "./Task.css";
 
@@ -14,9 +14,15 @@ interface TaskProps {
   task: TaskType;
   setColumns: Dispatch<SetStateAction<ColumnType[]>>;
   columnId: string;
+  handleDragStart: (arg: DragData) => void;
 }
 
-const Task: FC<TaskProps> = ({ task, setColumns, columnId }) => {
+const Task: FC<TaskProps> = ({
+  task,
+  setColumns,
+  columnId,
+  handleDragStart,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [taskTitle, setTaskTitle] = useState<string>(task.title);
 
@@ -28,7 +34,6 @@ const Task: FC<TaskProps> = ({ task, setColumns, columnId }) => {
 
   const handleSave = () => {
     setIsEditing(false);
-
     setColumns((prev) => {
       return prev.map((x) => {
         if (x.id === columnId) {
@@ -65,7 +70,13 @@ const Task: FC<TaskProps> = ({ task, setColumns, columnId }) => {
   };
 
   return (
-    <div className="task">
+    <div
+      className="task"
+      draggable
+      onDragStart={() =>
+        handleDragStart({ taskId: task.id, columnId: columnId })
+      }
+    >
       <div className="title">
         {isEditing ? (
           <input
