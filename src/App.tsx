@@ -98,7 +98,7 @@ function App() {
         />
       ))}
 
-      <button type="button" className="btn btn-add-column" onClick={addColumn}>
+      <button data-testid="btn-add-column" type="button" className="btn btn-add-column" onClick={addColumn}>
         +
       </button>
     </div>

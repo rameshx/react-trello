@@ -94,6 +94,7 @@ const Task: FC<TaskProps> = ({
       {!isEditing && (
         <div className="actions">
           <button
+            aria-label="Edit Task"
             type="button"
             className="btn btn-task-edit"
             onClick={() => setIsEditing(true)}
@@ -101,6 +102,7 @@ const Task: FC<TaskProps> = ({
             I
           </button>
           <button
+            aria-label="Delete Task"
             type="button"
             className="btn btn-task-delete"
             onClick={deleteTask}

@@ -109,7 +109,7 @@ const Column: FC<ColumnProps> = ({
           value={newTask}
           onChange={({ target: { value } }) => setNewTask(value)}
         />
-        <button type="button" className="btn" onClick={addTask}>
+        <button type="button" aria-label="Add Task" className="btn" onClick={addTask}>
           +
         </button>
       </div>
